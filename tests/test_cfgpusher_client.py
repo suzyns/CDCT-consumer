@@ -47,7 +47,7 @@ def test_get_file_not_exist(pact):
     expected = {"message": "[Reason]: File /opt/ns/configshare/dp/opt/ns/tenant/1114/watchlist2.json doesn't exist."}
     (
         pact.given("Cfgpusher returns file not found")
-        .upon_receiving("a get file request to Cfgpusher2")
+        .upon_receiving("a get file request to Cfgpusher")
         .with_request("get", "/file/opt/ns/tenant/1114/watchlist2.json")
         .will_respond_with(404, body=expected)
     )
@@ -61,7 +61,21 @@ def test_get_file_not_exist2(pact):
     expected = {"message": "[Reason]: File /opt/ns/configshare/dp/opt/ns/tenant/1113/watchlist2.json doesn't exist."}
     (
         pact.given("Cfgpusher returns file not found")
-        .upon_receiving("a get file request to Cfgpusher")
+        .upon_receiving("a get file request to Cfgpusher2")
+        .with_request("get", "/file/opt/ns/tenant/1113/watchlist2.json")
+        .will_respond_with(404, body=expected)
+    )
+
+    with pact:
+        client = CfgpusherClient(f"http://{PACT_MOCK_HOST}:{PACT_MOCK_PORT}")
+        resp = client.get_file("opt/ns/tenant/1113/watchlist2.json")
+        assert resp == expected
+
+def test_get_file_not_exist3(pact):
+    expected = {"message": "[Reason]: File /opt/ns/configshare/dp/opt/ns/tenant/1113/watchlist2.json doesn't exist."}
+    (
+        pact.given("Cfgpusher returns file not found")
+        .upon_receiving("a get file request to Cfgpusher3")
         .with_request("get", "/file/opt/ns/tenant/1113/watchlist2.json")
         .will_respond_with(404, body=expected)
     )
