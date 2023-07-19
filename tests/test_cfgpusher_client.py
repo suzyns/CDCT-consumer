@@ -72,3 +72,17 @@ def test_delete(pact):
         client = CfgpusherClient(f"http://{PACT_MOCK_HOST}:{PACT_MOCK_PORT}")
         resp = client.delete_file("opt/ns/tenant/1113/watchlist2.json")
         assert resp == expected
+
+def test_delete_not_exist(pact):
+    expected = {'status': 'OK'}
+    (
+        pact.given("Cfgpusher delete file not found")
+        .upon_receiving("a delete file request to Cfgpusher")
+        .with_request("delete", "/file/opt/ns/tenant/1113/watchlist2.json")
+        .will_respond_with(200, body=expected)
+    )
+
+    with pact:
+        client = CfgpusherClient(f"http://{PACT_MOCK_HOST}:{PACT_MOCK_PORT}")
+        resp = client.delete_file("opt/ns/tenant/1113/watchlist2.json")
+        assert resp == expected
