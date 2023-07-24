@@ -76,7 +76,7 @@ def test_get_file_not_exist3(pact):
     (
         pact.given("Cfgpusher returns file not found")
         .upon_receiving("a get file request to Cfgpusher3")
-        .with_request("get", "/file/opt/ns/tenant/1113/watchlist2.json")
+        .with_request("get", "/file/opt/ns/tenant/1112/watchlist2.json")
         .will_respond_with(404, body=expected)
     )
 
